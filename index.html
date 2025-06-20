@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Produtos</title>
+
+    <style>
+        body{
+            padding: 10%;
+        }
+        .formulario{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        label{
+            display: flex;
+            justify-content: space-between;
+        }
+        label, input{
+            font-size: 1rem;
+        }
+
+        input{
+            width: 500px;
+            height: 25px;
+        }
+
+        button{
+            margin-top: 20px;
+            width: 200px;
+            height: 75px;
+            font-size: 1rem;
+        }
+
+    </style>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function() {
+            const botao = document.getElementById('cadastrar');
+            botao.addEventListener('click', function() {
+                alert('Botão Cadastrar foi clicado!');
+                // Aqui você pode chamar outras funções ou manipular o formulário
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>
+        Cadastro Produtos
+    </h1>
+
+    <form action="" class="formulario">
+        <label for="">
+            Código do Produto:
+            <input type="text" name="codigo">
+        </label>
+        <label for="">
+            Descrição:
+            <input type="text" name="descricao">	
+        </label>
+        <label for="">
+            Preço de Compra:	
+            <input type="text" name="p_compra">
+        </label>
+        <label for="">
+            Quantidade em Estoque:
+            <input type="text" name="estoque">	
+        </label>
+        <label for="">
+            Preço de Venda:
+            <input type="text" name="p_venda">
+        </label>
+    </form>
+    <button type="button" id="cadastrar">Cadastrar</button>
+</body>
+</html>
