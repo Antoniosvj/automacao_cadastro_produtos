@@ -6,73 +6,166 @@
     <title>Cadastro Produtos</title>
 
     <style>
-        body{
-            padding: 10%;
-        }
-        .formulario{
+        body {
+            padding: 5%;
+            background: #f4f6fa;
+            font-family: Arial, Helvetica, sans-serif;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            justify-content: center;
+            align-items: center;
         }
-        label{
+        .formulario {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        label {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
-        label, input{
+        label, input {
             font-size: 1rem;
         }
-
-        input{
-            width: 500px;
-            height: 25px;
+        input {
+            width: 350px;
+            height: 30px;
+            padding: 5px 10px;
+            border: 1px solid #bfc9d1;
+            border-radius: 5px;
+            background: #f9fafb;
+            transition: border 0.2s;
         }
-
-        button{
-            margin-top: 20px;
+        input:focus {
+            border: 1.5px solid #4a90e2;
+            outline: none;
+            background: #fff;
+        }
+        button {
+            margin: 20px auto;
             width: 200px;
-            height: 75px;
-            font-size: 1rem;
+            height: 50px;
+            font-size: 1.1rem;
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
         }
-
+        button:hover {
+            background: #357ab8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+        }
+        th {
+            background: #4a90e2;
+            color: #fff;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background: #f4f6fa;
+        }
+        tr:hover td {
+            background: #eaf1fb;
+        }
     </style>
 
     <script defer>
         document.addEventListener('DOMContentLoaded', function() {
             const botao = document.getElementById('cadastrar');
+            const formulario = document.querySelector('.formulario');
+            const tabela = document.querySelector('tbody');
+
             botao.addEventListener('click', function() {
-                alert('Botão Cadastrar foi clicado!');
-                // Aqui você pode chamar outras funções ou manipular o formulário
+                // Pega os valores dos inputs
+                const codigo = formulario.querySelector('input[name="codigo"]').value.trim();
+                const descricao = formulario.querySelector('input[name="descricao"]').value.trim();
+                const p_compra = formulario.querySelector('input[name="p_compra"]').value.trim();
+                const estoque = formulario.querySelector('input[name="estoque"]').value.trim();
+                const p_venda = formulario.querySelector('input[name="p_venda"]').value.trim();
+
+                // Validação simples
+                if (!codigo || !descricao || !p_compra || !estoque || !p_venda) {
+                    alert('Preencha todos os campos!');
+                    return;
+                }
+
+                // Cria uma nova linha na tabela
+                const novaLinha = document.createElement('tr');
+                novaLinha.innerHTML = `
+                    <td>${codigo}</td>
+                    <td>${descricao}</td>
+                    <td>${p_compra}</td>
+                    <td>${estoque}</td>
+                    <td>${p_venda}</td>
+                `;
+                tabela.appendChild(novaLinha);
+
+                // Limpa os campos do formulário
+                formulario.reset();
             });
         });
     </script>
 </head>
 <body>
-    <h1>
-        Cadastro Produtos
-    </h1>
+    <h1>Cadastro Produtos</h1>
 
-    <form action="" class="formulario">
-        <label for="">
+    <form action="javascript:void(0)" class="formulario">
+        <label>
             Código do Produto:
             <input type="text" name="codigo">
         </label>
-        <label for="">
+        <label>
             Descrição:
             <input type="text" name="descricao">	
         </label>
-        <label for="">
+        <label>
             Preço de Compra:	
             <input type="text" name="p_compra">
         </label>
-        <label for="">
+        <label>
             Quantidade em Estoque:
             <input type="text" name="estoque">	
         </label>
-        <label for="">
+        <label>
             Preço de Venda:
             <input type="text" name="p_venda">
         </label>
     </form>
     <button type="button" id="cadastrar">Cadastrar</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código do Produto</th>
+                <th>Descrição</th>
+                <th>Preço de Compra</th>
+                <th>Quantidade em Estoque</th>
+                <th>Preço de Venda</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
 </body>
 </html>
