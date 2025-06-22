@@ -1,58 +1,56 @@
 #importações
-import pandas as pd
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+import sys
+from PySide6.QtWidgets import QFileDialog, QApplication, QWidget, QVBoxLayout, QPushButton
+from PySide6.QtCore import Slot
 
-import time
+#importação modulos
+from automacao import cadastro_produtos
 
-#lendo arquivo
-produtos = pd.read_csv('produtos.csv', delimiter=';')
+class AppWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Cadastro de Produtos no Sistema')
+        self.setGeometry(100, 100, 1000, 800)
 
-#renomeando colunas para facilitar o preenchimento
-produtos = produtos.rename(columns={
-    'Código do Produto': 'codigo',
-    'Descrição': 'descricao',
-    'Preço de Compra': 'p_compra',
-    'Quantidade em Estoque': 'estoque',
-    'Preço de Venda': 'p_venda' 
-})
+        self.init_ui()
 
+    def init_ui(self):
+        #cria o layout
+        main_layout = QVBoxLayout()
 
-#abre o navegador
-web = webdriver.Chrome()
+        #cria o botao
+        self.btn_cadastrar = QPushButton('Cadastro de Produtos')
+        self.btn_cadastrar.setFixedSize(200, 50)
+        self.btn_cadastrar.clicked.connect(self.carregar_arquivo)
 
-#abre a página
-web.get('http://127.0.0.1:5500/index.html')
+        #adiciona o botao no layout
+        main_layout.addWidget(self.btn_cadastrar)
 
-#espera a pagina carregar
-time.sleep(5)
-
-for _, produto in produtos.iterrows():
-    codigo = web.find_element(By.NAME, 'codigo')
-    codigo.clear()
-    codigo.send_keys(str(produto['codigo']))
-
-    descricao = web.find_element(By.NAME, 'descricao')
-    descricao.clear()
-    descricao.send_keys(str(produto['descricao']))
-
-    p_compra = web.find_element(By.NAME, 'p_compra')
-    p_compra.clear()
-    p_compra.send_keys(str(produto['p_compra']))
-
-    estoque = web.find_element(By.NAME, 'estoque')
-    estoque.clear()
-    estoque.send_keys(str(produto['estoque']))
-
-    p_venda = web.find_element(By.NAME, 'p_venda')
-    p_venda.clear()
-    p_venda.send_keys(str(produto['p_venda']))
-
-    btn_click = web.find_element(By.ID, 'cadastrar')
-    btn_click.click()
-
-    time.sleep(2)
+        main_layout.addStretch()
 
 
-web.quit() #fecha o navegador
+        #definir o layout para a janela
+        self.setLayout(main_layout)
+
+    @Slot()
+    def carregar_arquivo(self):
+        file_name, _ = QFileDialog.getOpenFileName( #para selecionar arquivo
+            self, #parent -> janela atual
+            'Selecionar Arquivo de Produtos', #titulo
+            '', #diretorio atual
+            'Arquivos CSV (*.csv);; Todos os Arquivos(*)' #filtro de arquivos
+        )
+
+        if file_name:
+            self.cadastrar(file_name)
+
+    @Slot()
+    def cadastrar(self, file_name):
+        cadastro_produtos(file_name)
+
+# inicio da aplicação
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    app_window = AppWindow()
+    app_window.show()
+    sys.exit(app.exec())
